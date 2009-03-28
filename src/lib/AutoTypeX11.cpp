@@ -138,8 +138,6 @@ void AutoTypeX11::perform(IEntryHandle* entry, bool hideWindow, int nr, bool was
 	else{
 		if (hideWindow && !(config->showSysTrayIcon() && config->minimizeTray()) )
 			mainWin->showMinimized();
-		if (wasLocked)
-			mainWin->OnUnLockWorkspace();
 	}
 }
 

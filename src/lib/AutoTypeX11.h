@@ -42,7 +42,7 @@ class AutoTypeX11 : public AutoType {
 	
 	protected:
 		void sleepTime(int msec);
-		inline void sleepKeyStrokeDelay(){ sleep(config->autoTypeKeyStrokeDelay()); };
+		inline void sleepKeyStrokeDelay(){ sleepTime(config->autoTypeKeyStrokeDelay()); };
 		void templateToKeysyms(const QString& Template, QList<AutoTypeAction>& KeySymList,IEntryHandle* entry);
 		void stringToKeysyms(const QString& string,QList<AutoTypeAction>& KeySymList);
 		
