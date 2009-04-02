@@ -45,9 +45,16 @@ AutoTypeX11::AutoTypeX11(KeepassMainWindow* mainWin) {
 	altgr_mask = 0;
 	altgr_keysym = NoSymbol;
 	
+	updateKeymap();
+	reReadKeymap = false;
+}
+
+void AutoTypeX11::updateKeymap() {
 	ReadKeymap();
 	if (!altgr_mask)
 		AddModifier(XK_Mode_switch);
+	if (!meta_mask)
+		meta_mask = Mod4Mask;
 }
 
 void AutoTypeX11::perform(IEntryHandle* entry, bool hideWindow, int nr, bool wasLocked){
@@ -107,6 +114,14 @@ void AutoTypeX11::perform(IEntryHandle* entry, bool hideWindow, int nr, bool was
 		else{
 			Keys << AutoTypeAction(TypeKey, str[i].unicode());
 		}
+	}
+	
+	/* Re-read keymap before first auto-type,
+	   seems to be necessary on X.Org Server 1.6,
+	   when KeePassX is in autostart */
+	if (!reReadKeymap) {
+		updateKeymap();
+		reReadKeymap = true;
 	}
 	
 	if (hideWindow)
@@ -555,7 +570,7 @@ void AutoTypeX11::ReadKeymap()
 	XDisplayKeycodes(dpy, &min_keycode, &max_keycode);
 	if (keysym_table != NULL) XFree(keysym_table);
 	keysym_table = XGetKeyboardMapping(dpy,
-									   min_keycode, max_keycode - min_keycode + 1,
+			min_keycode, max_keycode - min_keycode + 1,
 			&keysym_per_keycode);
 	for (keycode = min_keycode; keycode <= max_keycode; keycode++) {
     /* if the first keysym is alphabet and the second keysym is NoSymbol,
