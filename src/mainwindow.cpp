@@ -49,7 +49,6 @@ Export_KeePassX_Xml export_KeePassX_Xml;
 
 
 KeepassMainWindow::KeepassMainWindow(const QString& ArgFile,bool ArgMin,bool ArgLock,QWidget *parent, Qt::WFlags flags) :QMainWindow(parent,flags){
-	ShutingDown=false;
 	IsLocked=false;
 	EventOccurred=true;
 	inactivityCounter=0;
@@ -490,6 +489,8 @@ bool KeepassMainWindow::openDatabase(QString filename,bool IsAuto){
 	if (statusbarState != StatusBarReadOnlyLock)
 		setStatusBarMsg(StatusBarReady);
 	inactivityCounter = 0;
+	
+	GroupView->selectFirstGroup();
 	
 	return true;
 }
@@ -939,7 +940,6 @@ void KeepassMainWindow::OnFileChangeKey(){
 }
 
 void KeepassMainWindow::OnFileExit(){
-	ShutingDown=true;
 	close();
 }
 
@@ -1035,16 +1035,7 @@ void KeepassMainWindow::OnFileModified(){
 }
 
 void KeepassMainWindow::closeEvent(QCloseEvent* e){
-	if(!ShutingDown && config->showSysTrayIcon() && config->minimizeToTray()){
-		e->ignore();
-		if (config->lockOnMinimize() && !IsLocked && FileOpen)
-			OnUnLockWorkspace();
-		hide();
-		return;
-	}
-	
 	if(FileOpen && !closeDatabase()){
-		ShutingDown=false;
 		e->ignore();
 		return;
 	}
@@ -1064,6 +1055,7 @@ void KeepassMainWindow::closeEvent(QCloseEvent* e){
 	config->setShowStatusbar(statusBar()->isVisible());
 	
 	delete SysTray;
+	QMainWindow::closeEvent(e);
 	QApplication::quit();
 }
 
@@ -1301,8 +1293,10 @@ void KeepassMainWindow::OnUnLockWorkspace(){
 			item = parent;
 		}
 		
-		if (closeDatabase(true))
+		if (closeDatabase(true)) {
+			setStateFileModified(false);
 			setLock();
+		}
 		else
 			lockGroup.clear();
 	}

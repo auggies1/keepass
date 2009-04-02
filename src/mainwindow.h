@@ -130,7 +130,6 @@ class KeepassMainWindow : public QMainWindow, private Ui_MainWindow{
 		QWidget* NormalCentralWidget;
 		QWidget* LockedCentralWidget;
 		Ui_WorkspaceLockedWidget WorkspaceLockedWidget;
-		bool ShutingDown;
 		bool InUnLock;
 		QList<int> lockGroup;
 		QDialog* unlockDlg;

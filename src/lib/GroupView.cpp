@@ -191,6 +191,13 @@ void KeepassGroupView::setCurrentGroup(IGroupHandle* group){
 	setCurrentItem(Items[i]);
 }
 
+void KeepassGroupView::selectFirstGroup(){
+	if (Items.isEmpty())
+		return;
+	
+	setCurrentItem(Items[0]);
+}
+
 void KeepassGroupView::dragEnterEvent ( QDragEnterEvent * event ){
 	LastHoverItem=NULL;
 	InsLinePos=-1;
