@@ -162,7 +162,8 @@ void KeepassGroupView::OnEditGroup(){
 
 void KeepassGroupView::contextMenuEvent(QContextMenuEvent* e){
 	if(!(GroupViewItem*)itemAt(e->pos()))
-		setCurrentItem(NULL);
+		return;
+	
 	e->accept();
 	if(currentItem()==SearchResultItem)
 		ContextMenuSearchGroup->popup(e->globalPos());

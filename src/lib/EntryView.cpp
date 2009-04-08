@@ -202,7 +202,13 @@ void KeepassEntryView::updateEntry(EntryViewItem* item){
 		}
 	}
 	if (Columns.at(4)){
-		item->setText(j++,entry->comment().section('\n',0,0));}
+		QString comment = entry->comment();
+		int toPos = comment.indexOf(QRegExp("[\\r\\n]"));
+		if (toPos == -1)
+			item->setText(j++,comment);
+		else
+			item->setText(j++,comment.left(toPos));
+	}
 	if (Columns.at(5)){
 		item->setText(j++,entry->expire().dateToString(Qt::SystemLocaleDate));}
 	if (Columns.at(6)){
@@ -446,7 +452,13 @@ void KeepassEntryView::createItems(QList<IEntryHandle*>& entries){
 			}
 		}
 		if (Columns.at(4)){
-			item->setText(j++,entries[i]->comment().section('\n',0,0));}
+			QString comment = entries[i]->comment();
+			int toPos = comment.indexOf(QRegExp("[\\r\\n]"));
+			if (toPos == -1)
+				item->setText(j++,comment);
+			else
+				item->setText(j++,comment.left(toPos));
+		}
 		if (Columns.at(5)){
 			item->setText(j++,entries[i]->expire().dateToString(Qt::SystemLocaleDate));}
 		if (Columns.at(6)){
