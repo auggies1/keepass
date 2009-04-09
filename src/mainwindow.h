@@ -72,7 +72,7 @@ class KeepassMainWindow : public QMainWindow, private Ui_MainWindow{
 		void OnExtrasShowExpiredEntries();
 		//void OnExtrasTrashCan(); //TODO TrashCan
 		void OnHelpAbout();
-		//void OnHelpHandbook(); //TODO Handbook
+		void OnHelpHandbook();
 		//void OnItemExpanded(QTreeWidgetItem*);
 		//void OnItemCollaped(QTreeWidgetItem*);
 		void OnShowSearchResults();

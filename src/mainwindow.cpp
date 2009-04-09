@@ -17,6 +17,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <QPointer>
 #include <QToolBar>
 #include <QStatusBar>
 #include "mainwindow.h"
@@ -40,6 +41,7 @@
 //#include "dialogs/TrashCanDlg.h" //TODO TrashCan
 #include "dialogs/AddBookmarkDlg.h"
 #include "dialogs/ManageBookmarksDlg.h"
+#include "dialogs/HelpDlg.h"
 
 Import_KeePassX_Xml import_KeePassX_Xml;
 Import_PwManager import_PwManager;
@@ -185,7 +187,7 @@ void KeepassMainWindow::setupConnections(){
 	connect(ExtrasShowExpiredEntriesAction,SIGNAL(triggered(bool)),this,SLOT(OnExtrasShowExpiredEntries()));
 	//connect(ExtrasTrashCanAction,SIGNAL(triggered(bool)),this,SLOT(OnExtrasTrashCan())); //TODO ExtrasTrashCan
 
-	//connect(HelpHandbookAction,SIGNAL(triggered()),this,SLOT(OnHelpHandbook())); //TODO Handbook
+	connect(HelpHandbookAction,SIGNAL(triggered()),this,SLOT(OnHelpHandbook()));
 	connect(HelpAboutAction,SIGNAL(triggered()),this,SLOT(OnHelpAbout()));
 
 	connect(EntryView,SIGNAL(itemActivated(QTreeWidgetItem*,int)),EntryView,SLOT(OnEntryActivated(QTreeWidgetItem*,int)));
@@ -266,8 +268,8 @@ void KeepassMainWindow::setupIcons(){
 #else
 	EditAutoTypeAction->setVisible(false);
 #endif
-	//HelpHandbookAction->setIcon(getIcon("manual")); //TODO Handbook
-	HelpAboutAction->setIcon(getIcon("help"));
+	HelpHandbookAction->setIcon(getIcon("manual"));
+	HelpAboutAction->setIcon(getIcon("help_about"));
 	menuBookmarks->menuAction()->setIcon(getIcon("bookmark_folder"));
 	AddThisAsBookmarkAction->setIcon(getIcon("bookmark_this"));
 	AddBookmarkAction->setIcon(getIcon("bookmark_add"));
@@ -1128,21 +1130,20 @@ void KeepassMainWindow::OnHelpAbout(){
 	dlg.exec();
 }
 
- //TODO Handbook
-/*void KeepassMainWindow::OnHelpHandbook(){
-	HelpBrowser->openAssistant();
-
-
-}*/
+void KeepassMainWindow::OnHelpHandbook(){
+	QPointer<HelpDlg> dlg = new HelpDlg(this);
+	dlg->exec();
+	delete dlg;
+}
 
 void KeepassMainWindow::OnViewShowToolbar(bool show){
-config->setShowToolbar(show);
-toolBar->setVisible(show);
+	config->setShowToolbar(show);
+	toolBar->setVisible(show);
 }
 
 void KeepassMainWindow::OnViewShowEntryDetails(bool show){
-config->setShowEntryDetails(show);
-DetailView->setVisible(show);
+	config->setShowEntryDetails(show);
+	DetailView->setVisible(show);
 }
 
 /*void KeepassMainWindow::OnItemExpanded(QTreeWidgetItem* item){
