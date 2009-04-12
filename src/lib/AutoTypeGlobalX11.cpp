@@ -41,6 +41,7 @@ AutoTypeGlobalX11::AutoTypeGlobalX11(KeepassMainWindow* mainWin) : AutoTypeX11(m
 	//windowBlacklist << "kicker" << "KDE Desktop";
 	classBlacklist << "desktop_window" << "gnome-panel"; // Gnome
 	classBlacklist << "kdesktop" << "kicker"; // KDE 3
+	classBlacklist << "Plasma"; // KDE 4
 	classBlacklist << "xfdesktop" << "xfce4-panel"; // Xfce 4
 }
 
