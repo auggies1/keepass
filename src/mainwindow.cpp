@@ -92,6 +92,7 @@ KeepassMainWindow::KeepassMainWindow(const QString& ArgFile,bool ArgMin,bool Arg
 	LockedCentralWidget->setVisible(false);
 
 	setupConnections();
+	connect(qApp, SIGNAL(commitDataRequest(QSessionManager&)), SLOT(OnShutdown(QSessionManager&)));
 	
 	inactivityTimer = new QTimer(this);
 	inactivityTimer->setInterval(500);
@@ -1039,6 +1040,8 @@ void KeepassMainWindow::OnFileModified(){
 void KeepassMainWindow::closeEvent(QCloseEvent* e){
 	if(FileOpen && !closeDatabase()){
 		e->ignore();
+		if (!isVisible())
+			show();
 		return;
 	}
 	
@@ -1357,6 +1360,14 @@ void KeepassMainWindow::OnInactivityTimer(){
 				popUpWidget->hide();
 			OnUnLockWorkspace();
 		}
+	}
+}
+
+void KeepassMainWindow::OnShutdown(QSessionManager& manager) {
+	/* QApplication::commitData() only closes visible windows,
+	   so we need to manually close mainwindow if it's hidden */
+	if (manager.allowsInteraction() && !isVisible()) {
+		close();
 	}
 }
 
