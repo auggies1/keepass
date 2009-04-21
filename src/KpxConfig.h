@@ -100,7 +100,7 @@ public:
 	bool askBeforeDelete(){return settings.value("Options/AskBeforeDelete",true).toBool();}
 #ifdef AUTOTYPE
 	int autoTypePreGap(){return settings.value("Options/AutoTypePreGap",500).toInt();}
-	int autoTypeKeyStrokeDelay(){return settings.value("Options/AutoTypeKeyStrokeDelay",0).toInt();}
+	int autoTypeKeyStrokeDelay(){return settings.value("Options/AutoTypeKeyStrokeDelay",5).toInt();}
 #endif
 #ifdef GLOBAL_AUTOTYPE
 	Shortcut globalShortcut();
