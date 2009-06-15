@@ -534,7 +534,7 @@ bool KeepassMainWindow::closeDatabase(bool lock){
 	db->close();
 	delete db;
 	db=NULL;
-	if (QFile::exists(currentFile+".lock")){
+	if (!dbReadOnly && QFile::exists(currentFile+".lock")){
 		if (!QFile::remove(currentFile+".lock"))
 			QMessageBox::critical(this, tr("Error"), tr("Couldn't remove database lock file."));
 	}

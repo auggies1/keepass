@@ -596,7 +596,7 @@ bool Kdb3Database::loadReal(QString filename, bool readOnly, bool differentEncod
 	else if(Algorithm == Twofish_Cipher){
 		CTwofish twofish;
 		if (twofish.init(FinalKey, 32, EncryptionIV) != true){
-			error=tr("Unable to initalize the twofish algorithm.");
+			error=tr("Unable to initialize the twofish algorithm.");
 			LOAD_RETURN_CLEANUP
 		}
 		crypto_size = (unsigned long)twofish.padDecrypt((quint8 *)buffer + DB_HEADER_SIZE,
